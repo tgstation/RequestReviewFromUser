@@ -30,7 +30,7 @@ inputs:
     required: false
   users:
     description:
-      "User(s) to assign."
+      "User(s) to request review from."
     required: true
  
 runs:

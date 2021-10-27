@@ -40,13 +40,13 @@ static void RequestReviewFromUser(ActionInputs inputs)
     .ToList()
     .ForEach(user =>
     {
-        Console.WriteLine($"User {user} cannot be assigned, make sure he is member of a team.");
+        Console.WriteLine($"User {user} cannot be requested for review, make sure he is member of a team with read access .");
         users.Remove(user);
     }
     );
 
 
-    Console.WriteLine($"Trying to assign all valid users: {String.Join(" ", users)}");
+    Console.WriteLine($"Trying to request review from all valid users: {String.Join(" ", users)}");
     ghclient.PullRequest.ReviewRequest.Create(inputs.Owner, inputs.Name, inputs.ID, new PullRequestReviewRequest(users, Array.Empty<string>()));
 
 }
