@@ -1,0 +1,51 @@
+name: 'RequestReviewFromUser'
+description: "Github action requesting reviews from users for PRs."
+branding:
+  icon: user
+  color: white
+inputs:
+  owner:
+    description:
+      "The owner, for example: \"dotnet\". Assign from `github.repository_owner`."
+    required: true
+    default: ${{ github.repository_owner }}
+  name:
+    description:
+      "The repository name, for example: \"samples\". Assign from `github.repository`."
+    required: true
+    default: ${{ github.repository }}
+  token:
+    description:
+      "Github secret token. Assign from `github.token`."
+    required: true
+    default: ${{ github.token }}
+  ID:
+    description:
+      "ID of the PR to process. Assign from `github.event.pull_request.number`."
+    required: true
+    default: ${{ github.event.pull_request.number }}
+  separator:
+    description:
+      "Separator to use if multiple users are input."
+    required: false
+  users:
+    description:
+      "User(s) to assign."
+    required: true
+ 
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
+  args:
+  - '-o'
+  - ${{ inputs.owner }}
+  - '-n'
+  - ${{ inputs.name }}
+  - '-t'
+  - ${{ inputs.token }}
+  - '-i'
+  - ${{ inputs.ID }}
+  - '-s'
+  - ${{ inputs.separator }}
+  - '-u'
+  - ${{ inputs.users }}
