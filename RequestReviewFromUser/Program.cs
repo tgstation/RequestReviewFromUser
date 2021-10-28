@@ -45,8 +45,11 @@ static void RequestReviewFromUser(ActionInputs inputs)
     }
     );
 
+    //Can't request review from the PR author
+    PullRequest PR = ghclient.PullRequest.Get(inputs.Owner, inputs.Name, inputs.ID).Result;
+    users.Remove(PR.User.Login.ToString());
 
     Console.WriteLine($"Trying to request review from all valid users: {String.Join(" ", users)}");
-    ghclient.PullRequest.ReviewRequest.Create(inputs.Owner, inputs.Name, inputs.ID, new PullRequestReviewRequest(users, Array.Empty<string>()));
+    var result = ghclient.PullRequest.ReviewRequest.Create(inputs.Owner, inputs.Name, inputs.ID, new PullRequestReviewRequest(users, Array.Empty<string>())).Result;
 
 }
