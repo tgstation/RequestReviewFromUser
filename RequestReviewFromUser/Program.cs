@@ -19,6 +19,8 @@ parser.WithParsed(options => RequestReviewFromUser(options));
 
 static void RequestReviewFromUser(ActionInputs inputs)
 {
+    Console.WriteLine($"RequestReviewFromUser Version {System.Reflection.Assembly.GetEntryAssembly().GetName().Version}");
+
     List<string> users = new List<string>();
     List<string> nonAssignableUsers = new List<string>();
 
