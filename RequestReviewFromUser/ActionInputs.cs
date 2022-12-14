@@ -42,9 +42,14 @@ namespace RequestReviewFromUser
         public string separator { get; set; } = null!;
 
         [Option('u', "users",
-           Required = false,
+           Required = true,
            HelpText = "Single or multiple users to assign.")]
         public string users { get; set; } = null!;
+
+        [Option('r', "ignoreRemovedUsers",
+           Required = false,
+           HelpText = "Don't request review from users that got got previously removed as reviewer for the PR.")]
+        public bool? ignoreRemovedUsers { get; set; } = false;
 
         static void ParseAndAssign(string? value, Action<string> assign)
         {
