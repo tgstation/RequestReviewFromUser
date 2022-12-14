@@ -32,6 +32,11 @@ inputs:
     description:
       "User(s) to request review from."
     required: true
+  ignoreRemovedUsers:
+    description:
+      "Don't request review from users that got got previously removed as reviewer for the PR."
+    required: false
+    default: "false"
  
 runs:
   using: 'docker'
@@ -49,3 +54,5 @@ runs:
   - ${{ inputs.separator }}
   - '-u'
   - ${{ inputs.users }}
+  - '-r'
+  - ${{ inputs.ignoreRemovedUsers }}
