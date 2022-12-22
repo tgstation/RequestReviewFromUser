@@ -46,10 +46,10 @@ namespace RequestReviewFromUser
            HelpText = "Single or multiple users to assign.")]
         public string users { get; set; } = null!;
 
-        [Option('r', "ignoreRemovedUsers",
+        [Option('r', "alwaysRequestAll",
            Required = false,
-           HelpText = "Don't request review from users that got got previously removed as reviewer for the PR.")]
-        public bool? ignoreRemovedUsers { get; set; } = false;
+           HelpText = "Request review from all provided users, even if they got previously removed from review by a maintainer.")]
+        public bool? alwaysRequestAll { get; set; } = false;
 
         static void ParseAndAssign(string? value, Action<string> assign)
         {

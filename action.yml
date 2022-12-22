@@ -32,9 +32,9 @@ inputs:
     description:
       "User(s) to request review from."
     required: true
-  ignoreRemovedUsers:
+  alwaysRequestAll:
     description:
-      "Don't request review from users that got got previously removed as reviewer for the PR."
+      "Request review from all provided users, even if they got previously removed from review by a maintainer."
     required: false
     default: "false"
  
@@ -55,4 +55,4 @@ runs:
   - '-u'
   - ${{ inputs.users }}
   - '-r'
-  - ${{ inputs.ignoreRemovedUsers }}
+  - ${{ inputs.alwaysRequestAll }}
