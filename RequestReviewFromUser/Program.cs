@@ -73,23 +73,27 @@ static async Task RequestReviewFromUser(ActionInputs inputs)
         if (eventState == EventInfoState.ReviewRequestRemoved)
         {
             IssueEvent removalEvent = await ghclient.Issue.Events.Get(inputs.Owner, inputs.Name, eventInfo.Id);
-            //Remove users that removed themselves from review
-            if (users.Contains(removalEvent.RequestedReviewer.Login) && removalEvent.Actor.Id == removalEvent.RequestedReviewer.Id)
+            
+            if (users.Contains(removalEvent.RequestedReviewer.Login))
             {
-                Console.WriteLine($"User {removalEvent.RequestedReviewer.Login} will not be request for review because they previouly removed themselves from review.");
-                users.Remove(removalEvent.RequestedReviewer.Login);
-                continue;
-            }
-            //Otherwise check if remover(actor) is maintainer (write or admin perms)
-            else
-            {
-                CollaboratorPermission actorPerms = await ghclient.Repository.Collaborator.ReviewPermission(inputs.Owner, inputs.Name, removalEvent.Actor.Login);
-                actorPerms.Permission.TryParse(out PermissionLevel permLevel);
-                if (permLevel == PermissionLevel.Admin || permLevel == PermissionLevel.Write)
+                //Remove users that removed themselves from review
+                if (removalEvent.Actor.Id == removalEvent.RequestedReviewer.Id)
                 {
-                    Console.WriteLine($"User {removalEvent.RequestedReviewer.Login} will not be request for review because a maintainer ({removalEvent.Actor.Login}) previouly removed them from review.");
+                    Console.WriteLine($"User {removalEvent.RequestedReviewer.Login} will not be request for review because they previouly removed themselves from review.");
                     users.Remove(removalEvent.RequestedReviewer.Login);
                     continue;
+                }
+                //Otherwise check if remover(actor) is maintainer (write or admin perms)
+                else
+                {
+                    CollaboratorPermission actorPerms = await ghclient.Repository.Collaborator.ReviewPermission(inputs.Owner, inputs.Name, removalEvent.Actor.Login);
+                    actorPerms.Permission.TryParse(out PermissionLevel permLevel);
+                    if (permLevel == PermissionLevel.Admin || permLevel == PermissionLevel.Write)
+                    {
+                        Console.WriteLine($"User {removalEvent.RequestedReviewer.Login} will not be request for review because a maintainer ({removalEvent.Actor.Login}) previouly removed them from review.");
+                        users.Remove(removalEvent.RequestedReviewer.Login);
+                        continue;
+                    }
                 }
             }
         }
