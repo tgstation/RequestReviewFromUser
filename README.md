@@ -13,4 +13,4 @@ token | no | github.token | Token used for REST calls. Only needed to increase r
 ID | no | github.event.pull_request.number | ID of the PR to get modified files from
 separator | no | null | Separator used when multiple users are provided.
 user | no | null | User(s) to request review from. Separated by the specified separator if multiple.
-ignoreRemovedUsers | no | false | Don't request review from users that got got previously removed as reviewer for the PR.
+alwaysRequestAll | no | false | Request review from all provided users, even if they got previously removed from review by a maintainer.
