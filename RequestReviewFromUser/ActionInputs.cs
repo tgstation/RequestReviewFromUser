@@ -51,7 +51,7 @@ namespace RequestReviewFromUser
            HelpText = "Request review from all provided users, even if they got previously removed from review by a maintainer.")]
         public bool? alwaysRequestAll { get; set; } = false;
 
-        static void ParseAndAssign(string? value, Action<string> assign)
+        static void ParseAndAssign(string value, Action<string> assign)
         {
             if (value is { Length: > 0 } && assign is not null)
             {

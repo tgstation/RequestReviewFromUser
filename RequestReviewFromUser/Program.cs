@@ -86,9 +86,9 @@ static async Task RequestReviewFromUser(ActionInputs inputs)
                 //Otherwise check if remover(actor) is maintainer (write or admin perms)
                 else
                 {
-                    CollaboratorPermission actorPerms = await ghclient.Repository.Collaborator.ReviewPermission(inputs.Owner, inputs.Name, removalEvent.Actor.Login);
-                    actorPerms.Permission.TryParse(out PermissionLevel permLevel);
-                    if (permLevel == PermissionLevel.Admin || permLevel == PermissionLevel.Write)
+                    CollaboratorPermissionResponse actorPerms = await ghclient.Repository.Collaborator.ReviewPermission(inputs.Owner, inputs.Name, removalEvent.Actor.Login);
+                    string permLevel = actorPerms.Permission;
+                    if (permLevel == "admin" || permLevel == "write")
                     {
                         Console.WriteLine($"User {removalEvent.RequestedReviewer.Login} will not be request for review because a maintainer ({removalEvent.Actor.Login}) previouly removed them from review.");
                         users.Remove(removalEvent.RequestedReviewer.Login);
